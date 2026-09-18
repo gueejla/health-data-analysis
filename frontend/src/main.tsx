@@ -6,6 +6,7 @@ import Home from '@/pages/home/home'
 import Dashboard from '@/pages/dashboard/dashboard'
 import Upload from '@/pages/upload/upload'
 import NotFound from '@/pages/notFound/notFound'
+import About from './pages/about/about'
 import '@/index.css'
 
 createRoot(document.getElementById('root')!).render(
@@ -16,6 +17,7 @@ createRoot(document.getElementById('root')!).render(
           <Route index element={<Home />} />
           <Route path="dashboard" element={<Dashboard />} />
           <Route path="upload" element={<Upload />} />
+          <Route path="about" element={<About />} />
           <Route path="index.html" element={<Navigate to="/" replace />} />
           <Route path="*" element={<NotFound />} />
         </Route>
