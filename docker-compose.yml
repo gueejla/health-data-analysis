@@ -1,0 +1,3 @@
+// In dev on Windows easiest to run backend, frontend and db manually for now
+// In prod and future dev envs use following docker compose
+// ...

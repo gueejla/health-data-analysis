@@ -1,0 +1,16 @@
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5432/healthdata
+    username: ${DB_USER:app}
+    password: ${DB_PASSWORD:dev}
+  jpa:
+    hibernate:
+      ddl-auto: validate   # never 'update' — Flyway owns the schema
+    open-in-view: false     # best practice: avoids lazy-loading in views
+  flyway:
+    enabled: true
+
+server:
+  port: 8080
+  # error:
+  #   include-stacktrace: never
