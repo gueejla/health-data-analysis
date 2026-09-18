@@ -1,6 +1,6 @@
 import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
-import { BrowserRouter, Routes, Route } from 'react-router-dom'
+import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
 import App from '@/App'
 import Home from '@/pages/home/home'
 import Dashboard from '@/pages/dashboard/dashboard'
@@ -16,6 +16,7 @@ createRoot(document.getElementById('root')!).render(
           <Route index element={<Home />} />
           <Route path="dashboard" element={<Dashboard />} />
           <Route path="upload" element={<Upload />} />
+          <Route path="index.html" element={<Navigate to="/" replace />} />
           <Route path="*" element={<NotFound />} />
         </Route>
       </Routes>

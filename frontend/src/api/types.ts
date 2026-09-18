@@ -1,6 +1,6 @@
 export interface User {
-  id: number
+  id?: number
   email: string
   name: string
-  createdAt: string // ISO timestamp string from the backend
+  createdAt?: string // ISO timestamp string from the backend
 }

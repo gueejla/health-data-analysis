@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { getUsers } from '@/api/usersApi'
+import { getUsers } from '@/api/users'
 import type { User } from '@/api/types'
 
 export default function Dashboard() {
