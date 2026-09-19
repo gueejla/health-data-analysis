@@ -48,16 +48,14 @@ export default function Dashboard() {
         <table className="w-full max-w-2xl bg-white shadow rounded overflow-hidden text-left">
           <thead className="bg-gray-100">
             <tr>
-              <th className="p-3 font-semibold">Name</th>
-              <th className="p-3 font-semibold">Email</th>
+              <th className="p-3 font-semibold">Username</th>
               <th className="p-3 font-semibold">Joined</th>
             </tr>
           </thead>
           <tbody>
             {users.map((user) => (
               <tr key={user.id} className="border-t border-gray-100">
-                <td className="p-3">{user.name}</td>
-                <td className="p-3">{user.email}</td>
+                <td className="p-3">{user.username}</td>
                 <td className="p-3 text-gray-500">
                   {user.createdAt
                     ? new Date(user.createdAt).toLocaleDateString()

@@ -1,13 +1,11 @@
 import { NavLink } from 'react-router-dom'
 
-type Props = {
-  dataImported: boolean;
-};
-
-export default function NavBar({dataImported}: Props) {
+export default function NavBar() {
   return (
     <div className="flex items-center justify-between bg-teal-100/50 drop-shadow-md">
-      <a href="/" className="text-xl font-bold text-gray-700 px-20">Health Data Analysis</a>
+      <a href="/" className="text-xl font-bold text-gray-700 px-20">
+        Health Data Analysis
+      </a>
       <nav className="p-7 flex gap-4">
         <NavLink
           to="/"
@@ -19,20 +17,20 @@ export default function NavBar({dataImported}: Props) {
           Home
         </NavLink>
         <NavLink
+          to="/register"
+          className={({ isActive }) =>
+            isActive ? 'font-bold text-teal-600' : 'text-gray-700'
+          }
+        >
+          Sign Up
+        </NavLink>
+        <NavLink
           to="/dashboard"
           className={({ isActive }) =>
             isActive ? 'font-bold text-teal-600' : 'text-gray-700'
           }
         >
           Dashboard
-        </NavLink>
-        <NavLink
-          to="/upload"
-          className={({ isActive }) =>
-            isActive ? 'font-bold text-teal-600' : 'text-gray-700'
-          }
-        >
-          Upload
         </NavLink>
         <NavLink
           to="/about"
@@ -44,4 +42,5 @@ export default function NavBar({dataImported}: Props) {
         </NavLink>
       </nav>
     </div>
-  )}
+  )
+}

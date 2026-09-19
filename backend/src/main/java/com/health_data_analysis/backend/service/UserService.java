@@ -28,12 +28,12 @@ public class UserService {
 
     @Transactional 
     public UserResponse create(UserRequest request) {
-        if (repository.existsByEmail(request.email())) {
-            throw new DuplicateResourceException("Email already in use");
+        if (repository.existsByUsername(request.username())) {
+            throw new DuplicateResourceException("Username already in use");
         }
         User user = new User();
-        user.setEmail(request.email());
-        user.setName(request.name());
+        user.setUsername(request.username());
+        user.setPassword(request.password());
         return toResponse(repository.save(user));
     }
 
@@ -44,6 +44,6 @@ public class UserService {
     }
 
     private UserResponse toResponse(User u) {
-        return new UserResponse(u.getId(), u.getEmail(), u.getName(), u.getCreatedAt());
+        return new UserResponse(u.getId(), u.getUsername(), u.getCreatedAt());
     }
 }

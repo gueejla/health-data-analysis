@@ -25,23 +25,24 @@ class UserControllerTest {
 
     @Test
     void createUser_returns201() throws Exception {
-        mockMvc.perform(post("/api/users")
+        mockMvc.perform(post("/api-v1/users")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content("""
-                    {"email":"a@b.com","name":"Alice"}
+                    {"username":"alice","password":"secret"}
                     """))
             .andExpect(status().isCreated())
-            .andExpect(jsonPath("$.email").value("a@b.com"));
+            .andExpect(jsonPath("$.username").value("alice"))
+            .andExpect(jsonPath("$.password").doesNotExist());
     }
 
     @Test
-    void createInvalidEmail_returns400() throws Exception {
-        mockMvc.perform(post("/api/users")
+    void createInvalidUsername_returns400() throws Exception {
+        mockMvc.perform(post("/api-v1/users")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content("""
-                    {"email":"not-an-email","name":"Bob"}
+                    {"username":"","password":"secret"}
                     """))
             .andExpect(status().isBadRequest())
-            .andExpect(jsonPath("$.fieldErrors.email").exists());
+            .andExpect(jsonPath("$.fieldErrors.username").exists());
     }
 }
