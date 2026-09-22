@@ -9,8 +9,6 @@ import com.health_data_analysis.backend.repository.UserRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
-
 @Service
 @Transactional(readOnly = true)
 public class UserService {
@@ -19,11 +17,6 @@ public class UserService {
 
     public UserService(UserRepository repository) {
         this.repository = repository;
-    }
-
-    public List<UserResponse> findAll() {
-        return repository.findAll().stream()
-            .map(this::toResponse).toList();
     }
 
     @Transactional 
@@ -37,10 +30,10 @@ public class UserService {
         return toResponse(repository.save(user));
     }
 
-    public UserResponse getById(Long id) {
-        return repository.findById(id)
+    public UserResponse getByUsername(String username) {
+        return repository.findByUsername(username)
             .map(this::toResponse)
-            .orElseThrow(() -> new NotFoundException("User " + id + " not found"));
+            .orElseThrow(() -> new NotFoundException("User " + username + " not found"));
     }
 
     private UserResponse toResponse(User u) {

@@ -10,6 +10,7 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -44,5 +45,31 @@ class UserControllerTest {
                     """))
             .andExpect(status().isBadRequest())
             .andExpect(jsonPath("$.fieldErrors.username").exists());
+    }
+
+    @Test
+    void getUserByUsername_returnsUser() throws Exception {
+        mockMvc.perform(post("/api-v1/users")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content("""
+                    {"username":"alice","password":"secret"}
+                    """))
+            .andExpect(status().isCreated());
+
+        mockMvc.perform(get("/api-v1/users/alice"))
+            .andExpect(status().isOk())
+            .andExpect(jsonPath("$.username").value("alice"));
+    }
+
+    @Test
+    void getUsersCollection_isNotAllowed() throws Exception {
+        mockMvc.perform(get("/api-v1/users"))
+            .andExpect(status().isMethodNotAllowed());
+    }
+
+    @Test
+    void getUnknownUsername_returns404() throws Exception {
+        mockMvc.perform(get("/api-v1/users/unknown"))
+            .andExpect(status().isNotFound());
     }
 }

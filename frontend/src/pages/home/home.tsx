@@ -77,7 +77,7 @@ export default function Home() {
                 />
               </svg>
               <span className="text-sm font-medium text-gray-600">
-                Local-First
+                Fully secure
               </span>
             </div>
             <span className="w-px h-6 bg-gray-200 hidden md:block" />

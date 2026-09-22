@@ -6,7 +6,6 @@ import com.health_data_analysis.backend.service.UserService;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
-import java.util.List;
 
 @RestController
 @RequestMapping("/api-v1/users")
@@ -18,14 +17,9 @@ public class UserController {
         this.service = service;
     }
 
-    @GetMapping
-    public List<UserResponse> getAll() {
-        return service.findAll();
-    }
-
-    @GetMapping("/{id}")
-    public UserResponse getById(@PathVariable Long id) {
-        return service.getById(id);
+    @GetMapping("/{username}")
+    public UserResponse getByUsername(@PathVariable String username) {
+        return service.getByUsername(username);
     }
 
     @PostMapping

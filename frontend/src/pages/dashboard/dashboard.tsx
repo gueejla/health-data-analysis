@@ -1,50 +1,64 @@
-import { useEffect, useState } from 'react'
-import { getUsers } from '@/api/users'
+import { useState } from 'react'
+import { getUser } from '@/api/users'
 import type { User } from '@/api/types'
+import type { FormEvent } from 'react'
 
 export default function Dashboard() {
-  const [users, setUsers] = useState<User[]>([]) // ← typed state
-  const [loading, setLoading] = useState(true)
-  const [error, setError] = useState<string | null>(null) // ← typed error
+  const [username, setUsername] = useState('')
+  const [user, setUser] = useState<User | null>(null)
+  const [loading, setLoading] = useState(false)
+  const [error, setError] = useState<string | null>(null)
 
-  useEffect(() => {
-    let cancelled = false
+  const handleSubmit = async (event: FormEvent) => {
+    event.preventDefault()
+    setLoading(true)
+    setError(null)
+    setUser(null)
 
-    getUsers()
-      .then((data) => {
-        if (!cancelled) setUsers(data)
-      })
-      .catch((err: Error) => {
-        if (!cancelled) setError(err.message)
-      })
-      .finally(() => {
-        if (!cancelled) setLoading(false)
-      })
-
-    return () => {
-      cancelled = true
+    try {
+      setUser(await getUser(username.trim()))
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Unable to load user.')
+    } finally {
+      setLoading(false)
     }
-  }, [])
+  }
 
   if (loading) {
-    return <p className="text-gray-500">Loading users…</p>
+    return <p className="text-gray-500">Loading user…</p>
   }
 
   if (error) {
     return (
       <div className="p-4 bg-red-50 text-red-700 rounded border border-red-200">
-        Error loading users: {error}
+        Error loading user: {error}
       </div>
     )
   }
 
   return (
     <div>
-      <h1 className="text-2xl font-bold mb-4">Users</h1>
+      <h1 className="text-2xl font-bold mb-4">Find your data</h1>
+      <form onSubmit={handleSubmit} className="flex gap-2 mb-4 max-w-2xl">
+        <input
+          required
+          value={username}
+          onChange={(event) => setUsername(event.target.value)}
+          placeholder="Username"
+          className="flex-1 rounded border border-gray-300 p-2"
+        />
+        <button type="submit" disabled={loading} className="rounded bg-blue-600 px-4 py-2 text-white disabled:opacity-50">
+          {loading ? 'Loading…' : 'Find'}
+        </button>
+      </form>
 
-      {users.length === 0 ? (
-        <p className="text-gray-500">No users yet.</p>
-      ) : (
+      {error && (
+        <div className="p-4 bg-red-50 text-red-700 rounded border border-red-200">
+          Error loading user: {error}
+        </div>
+      )}
+
+      {user && (
         <table className="w-full max-w-2xl bg-white shadow rounded overflow-hidden text-left">
           <thead className="bg-gray-100">
             <tr>
@@ -53,16 +67,14 @@ export default function Dashboard() {
             </tr>
           </thead>
           <tbody>
-            {users.map((user) => (
-              <tr key={user.id} className="border-t border-gray-100">
-                <td className="p-3">{user.username}</td>
-                <td className="p-3 text-gray-500">
-                  {user.createdAt
-                    ? new Date(user.createdAt).toLocaleDateString()
-                    : '—'}
-                </td>
-              </tr>
-            ))}
+            <tr className="border-t border-gray-100">
+              <td className="p-3">{user.username}</td>
+              <td className="p-3 text-gray-500">
+                {user.createdAt
+                  ? new Date(user.createdAt).toLocaleDateString()
+                  : '—'}
+              </td>
+            </tr>
           </tbody>
         </table>
       )}

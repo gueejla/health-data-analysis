@@ -1,3 +1,4 @@
+// Good endpoint for random generation (in this case basic words for a default username)
 const WORDS_ENDPOINT = 'https://generate-random.org/api/v1/generate/strings'
 
 interface WordGenerationResponse {
