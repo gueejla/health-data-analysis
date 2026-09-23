@@ -1,10 +1,11 @@
 import { useState, useEffect } from 'react'
 import { generateUsername } from '@/api/username'
-import { createUser } from '@/api/users'
+import { registerUserWithCsv } from '@/api/users'
 import type { User } from '@/api/types'
 
 export default function Register() {
   const [username, setUsername] = useState('')
+  const [csvFile, setCsvFile] = useState<File | null>(null)
   const [error, setError] = useState<string | null>(null)
   const [createdUser, setCreatedUser] = useState<User | null>(null)
   const [submitting, setSubmitting] = useState(false)
@@ -16,7 +17,11 @@ export default function Register() {
 
   const usernameValid =
     username.trim().length > 0 && username.trim().length <= 100
-  const formValid = usernameValid && !submitting && !generating
+  const csvValid =
+    csvFile !== null &&
+    csvFile.size > 0 &&
+    csvFile.name.toLowerCase().endsWith('.csv')
+  const formValid = usernameValid && csvValid && !submitting && !generating
 
   async function handleSubmit(e: React.SubmitEvent<HTMLFormElement>) {
     e.preventDefault()
@@ -27,9 +32,10 @@ export default function Register() {
     setSubmitting(true)
 
     try {
-      const user = await createUser({ username: username.trim() })
+      const user = await registerUserWithCsv(username.trim(), csvFile!)
       setCreatedUser(user)
       setUsername('')
+      setCsvFile(null)
     } catch (err) {
       setError(
         err instanceof Error
@@ -97,6 +103,30 @@ export default function Register() {
               {username.length > 100 && (
                 <p className="mt-1 text-sm text-red-600">
                   Username must be 100 characters or fewer.
+                </p>
+              )}
+            </div>
+
+            <div>
+              <label
+                htmlFor="csv-file"
+                className="block text-sm font-medium text-gray-700 mb-1"
+              >
+                Samsung Health CSV
+              </label>
+              <input
+                id="csv-file"
+                type="file"
+                accept=".csv,text/csv"
+                onChange={(e) => setCsvFile(e.target.files?.[0] ?? null)}
+                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+              />
+              <p className="mt-1 text-xs text-gray-500">
+                Upload a non-empty CSV file to create your account.
+              </p>
+              {csvFile && !csvValid && (
+                <p className="mt-1 text-sm text-red-600">
+                  Please choose a non-empty .csv file.
                 </p>
               )}
             </div>

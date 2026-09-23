@@ -25,5 +25,6 @@ public class User {
     @Column(name = "created_at", insertable = false, updatable = false)
     private Instant createdAt;
 
-    // getters/setters (or Lombok @Getter @Setter)
+    @OneToOne(mappedBy = "user", fetch = FetchType.LAZY)
+    private HealthData healthData;
 }
