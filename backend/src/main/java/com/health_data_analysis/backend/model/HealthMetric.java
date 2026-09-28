@@ -21,8 +21,12 @@ public class HealthMetric {
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "health_data_id", nullable = false)
-    private HealthData healthData;
+    @JoinColumn(name = "import_job_id", nullable = false)
+    private ImportJob importJob;
+
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "user_id", nullable = false)
+    private User user;
 
     @Column(name = "metric_type", nullable = false, length = 64)
     private String metricType;
@@ -30,10 +34,17 @@ public class HealthMetric {
     @Column(length = 64)
     private String source;
 
-    @Column(name = "measured_at", nullable = false)
-    private Instant measuredAt;
+    @Column(name = "measured_at_start", nullable = false)
+    private Instant measuredAtStart;
 
-    private Double value;
+    @Column(name = "measured_at_end")
+    private Instant measuredAtEnd;
+
+    @Column(name = "min_value")
+    private Double minValue;
+
+    @Column(name = "max_value")
+    private Double maxValue;
 
     @JdbcTypeCode(SqlTypes.JSON)
     @Column(columnDefinition = "jsonb")

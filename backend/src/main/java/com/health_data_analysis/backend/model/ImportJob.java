@@ -10,21 +10,18 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-@Table(name = "health_data")
+@Table(name = "import_job")
 @Getter
 @Setter
 @NoArgsConstructor
-public class HealthData {
+public class ImportJob {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "raw_csv", nullable = false, columnDefinition = "bytea")
-    private byte[] rawCsv;
-
     @Enumerated(EnumType.STRING)
     @Column(nullable = false, length = 20)
-    private HealthDataStatus status = HealthDataStatus.PENDING;
+    private ImportStatus status = ImportStatus.PENDING;
 
     @Column(name = "processing_completed_at")
     private Instant processingCompletedAt;
@@ -39,7 +36,7 @@ public class HealthData {
     @JoinColumn(name = "user_id", nullable = false, unique = true)
     private User user;
 
-    @OneToMany(mappedBy = "healthData", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "importJob", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<HealthMetric> metrics = new ArrayList<>();
 
     @PrePersist
@@ -51,11 +48,11 @@ public class HealthData {
 
     public void addMetric(HealthMetric metric) {
         metrics.add(metric);
-        metric.setHealthData(this);
+        metric.setImportJob(this);
     }
 
     public void removeMetric(HealthMetric metric) {
         metrics.remove(metric);
-        metric.setHealthData(null);
+        metric.setImportJob(null);
     }
 }

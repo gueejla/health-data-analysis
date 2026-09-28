@@ -6,6 +6,8 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.Instant;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "users")
@@ -26,5 +28,8 @@ public class User {
     private Instant createdAt;
 
     @OneToOne(mappedBy = "user", fetch = FetchType.LAZY)
-    private HealthData healthData;
+    private ImportJob importJob;
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<HealthMetric> metrics = new ArrayList<>();
 }

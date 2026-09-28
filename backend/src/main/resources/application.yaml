@@ -7,6 +7,14 @@ spring:
     hibernate:
       ddl-auto: validate   # never 'update' — Flyway owns the schema
     open-in-view: false     # best practice: avoids lazy-loading in views
+    properties:
+      hibernate:
+        jdbc:
+          batch_size: 500          # batch INSERTs
+        order_inserts: true        # group same-table statements together
+  servlet:
+    multipart:
+      max-file-size: 200MB
   flyway:
     enabled: true
 
