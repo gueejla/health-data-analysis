@@ -1,10 +1,10 @@
-CREATE TABLE import_job (
-    id                      BIGSERIAL PRIMARY KEY,
-    status                  VARCHAR(32) NOT NULL,
-    processing_completed_at TIMESTAMPTZ DEFAULT 0,
-    error_message           TEXT,
-    uploaded_at             TIMESTAMPTZ NOT NULL DEFAULT now(),
-    user_id                 BIGINT NOT NULL UNIQUE REFERENCES users(id),
+CREATE TABLE import_jobs (
+    id                UUID PRIMARY KEY,
+    status            VARCHAR(32) NOT NULL,
+    completed_at      TIMESTAMPTZ DEFAULT 0,
+    error_message     TEXT,
+    uploaded_at       TIMESTAMPTZ NOT NULL DEFAULT now(),
+    user_id           BIGINT NOT NULL UNIQUE REFERENCES users(id),
 );
 
 CREATE TABLE health_metrics (
@@ -13,10 +13,8 @@ CREATE TABLE health_metrics (
     user_id           BIGINT NOT NULL REFERENCES users(id),
     metric_type       VARCHAR(64) NOT NULL,       -- 'heart_rate', 'step_count', 'sleep_stage'...
     source            VARCHAR(64),                     -- 'samsung_health', 'csv_import', ...
-    measured_at_start TIMESTAMPTZ NOT NULL,
-    measured_at_end   TIMESTAMPTZ NOT NULL,
-    min_value         DOUBLE PRECISION,                 -- single numeric value
-    max_value         DOUBLE PRECISION,                 -- single numeric value
+    measured_at       TIMESTAMPTZ NOT NULL,
+    value             DOUBLE PRECISION,                 -- single numeric value
     attributes        JSONB,                       -- type-specific extras (sleep stages, GPS track ref)
     created_at        TIMESTAMPTZ NOT NULL DEFAULT now()
 );

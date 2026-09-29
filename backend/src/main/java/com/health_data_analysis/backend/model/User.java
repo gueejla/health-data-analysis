@@ -32,4 +32,14 @@ public class User {
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<HealthMetric> metrics = new ArrayList<>();
+
+    public String getEmail() {
+      // TODO Auto-generated method stub
+      throw new UnsupportedOperationException("Unimplemented method 'getEmail'");
+    }
+
+    public String getPasswordHash() {
+      // TODO Auto-generated method stub
+      throw new UnsupportedOperationException("Unimplemented method 'getPasswordHash'");
+    }
 }

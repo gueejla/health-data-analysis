@@ -15,11 +15,9 @@ import org.springframework.web.multipart.MultipartFile;
 public class UserService {
 
     private final UserRepository repository;
-    private final HealthDataService healthDataService;
 
-    public UserService(UserRepository repository, HealthDataService healthDataService) {
+    public UserService(UserRepository repository) {
         this.repository = repository;
-        this.healthDataService = healthDataService;
     }
 
     @Transactional 
@@ -36,7 +34,6 @@ public class UserService {
     @Transactional
     public UserResponse createWithHealthData(UserRequest request, MultipartFile file) {
         UserResponse response = create(request);
-        healthDataService.upload(request.username(), file);
         return response;
     }
 
