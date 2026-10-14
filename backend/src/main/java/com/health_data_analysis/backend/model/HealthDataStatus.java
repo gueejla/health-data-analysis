@@ -1,6 +1,6 @@
 package com.health_data_analysis.backend.model;
 
-public enum ImportStatus {
+public enum HealthDataStatus {
     PENDING,
     PARSING,
     COMPLETED,
